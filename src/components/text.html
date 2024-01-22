@@ -1,0 +1,50 @@
+<div class="mobile_nav_wrapper">
+    {% for block in section.blocks %}
+    {% case block.type %}
+    {% when 'mobile_nav_menu_item' %}
+    <details class="mobile_nav_items">
+        <summary>
+            {{ block.settings.menu_item_label }}
+        </summary>
+        <div class="details_inner_wrapper">
+            <div class="mobile_nav_menu_menu">
+                <details>
+                    {% for link in block.settings.mobile_nav_menu.links %}
+                    <summary>
+                        {{ link.title }}
+                    </summary>
+                    {% if link.links.size > 1 %}
+                    <div class="menu dropdown-child">
+                        {% for child_link in link.links %}
+                        {% if child_link.links.size > 1 %}
+                        <details class="menu-link">
+                            <summary>
+                                <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                            </summary>
+                            <div>
+                                <ul class="menu dropdown-grandchild">
+                                    {% for grandchild_link in child_link.links %}
+                                    <li class="menu-link">
+                                        <a href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </details>
+                        {% else %}
+                        <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </details>
+            </div>
+            <div class="mobile_nav_menu_image_wrapper">
+                <img src="{{ block.settings.mobile_nav_menu_img | img_url:'master' }}" width="100%">
+            </div>
+        </div>
+    </details>
+    {% endcase %}
+    {% endfor %}
+</div>
